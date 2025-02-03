@@ -1,6 +1,6 @@
 package com.kevin.demo_hexagonal_architecture.application.usecases;
 
-import com.kevin.demo_hexagonal_architecture.application.dao.MovieDao;
+import com.kevin.demo_hexagonal_architecture.application.ports.MovieDao;
 import com.kevin.demo_hexagonal_architecture.application.dto.MovieDto;
 import com.kevin.demo_hexagonal_architecture.domain.Movie;
 import com.kevin.demo_hexagonal_architecture.domain.exceptions.MovieAlreadyExistsException;
@@ -8,11 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

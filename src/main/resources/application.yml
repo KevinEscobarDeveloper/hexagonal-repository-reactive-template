@@ -1,1 +1,13 @@
-spring.application.name=demo-hexagonal-architecture
+spring:
+  application:
+    name: "hexagonal-arch-template"
+    #Mongo db
+  data:
+    mongodb:
+      uri: "mongodb://localhost:27017"
+      database: "cinema"
+  docker:
+    compose:
+      enabled: false
+server:
+  port: 8080
