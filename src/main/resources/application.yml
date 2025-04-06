@@ -1,7 +1,6 @@
 spring:
   application:
     name: "hexagonal-arch-template"
-    #Mongo db
   data:
     mongodb:
       uri: "mongodb://localhost:27017"
@@ -9,5 +8,40 @@ spring:
   docker:
     compose:
       enabled: false
+
 server:
   port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "metrics,prometheus,health"
+  metrics:
+    tags:
+      application: "hexagonal-arch-template"
+
+prometheus:
+  image: prom/prometheus:latest
+  volumes:
+    - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  ports:
+    - "9090:9090"
+
+grafana:
+  image: grafana/grafana
+  ports:
+    - "3000:3000"
+  depends_on:
+    - prometheus
+  environment:
+    - GF_SECURITY_ADMIN_PASSWORD=admin
+
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: "spring-boot"
+    metrics_path: "/actuator/prometheus"
+    static_configs:
+      - targets: ["host.docker.internal:8080"]

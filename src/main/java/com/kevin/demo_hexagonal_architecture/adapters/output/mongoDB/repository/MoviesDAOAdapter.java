@@ -40,6 +40,11 @@ public class MoviesDAOAdapter implements MovieDao {
     }
 
     @Override
+    public Flux<Movie> searchMovies(String title) {
+        return movieReactiveRepository.searchMovies(title).map(movieMapper::toDomain);
+    }
+
+    @Override
     public Mono<Void> deleteMovie(Movie oldMovie) {
         return movieReactiveRepository.deleteById(oldMovie.id()).then(Mono.empty());
     }

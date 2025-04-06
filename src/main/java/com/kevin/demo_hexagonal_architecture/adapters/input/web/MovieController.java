@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/movies")
@@ -32,5 +33,11 @@ public class MovieController {
     @PutMapping
     public ResponseEntity<?> updateMovie(@RequestBody Movie movie){
         return ResponseEntity.status(HttpStatus.OK).body(movieUseCase.updateMovie(movie));
+    }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<Flux<MovieDto>> searchMovies(@RequestParam String title) {
+        return ResponseEntity.ok(movieUseCase.searchMovies(title));
     }
 }

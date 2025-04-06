@@ -12,5 +12,6 @@ public interface MovieDao {
     Flux<Movie> findAllMovies();
     Mono<Void> saveMovie(MovieDto movie);
     Mono<Void> updateMovie(Movie newMovie);
+    Flux<Movie> searchMovies(String title);
     Mono<Void> deleteMovie(Movie oldMovie);
 }
