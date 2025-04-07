@@ -3,11 +3,12 @@ spring:
     name: "hexagonal-arch-template"
   data:
     mongodb:
-      uri: "mongodb://localhost:27017"
+      uri: "mongodb://root:secret@localhost:27017/cinema?authSource=admin&replicaSet=rs0"
       database: "cinema"
   docker:
     compose:
-      enabled: false
+      enabled: true
+      file: compose.yaml
 
 server:
   port: 8080
