@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Document(collection = "movies")
 public class MovieEntity {
         @Id
-        private Long id;
+        private String id;
 
         @Indexed(unique = true)
         @Field(name = "title")

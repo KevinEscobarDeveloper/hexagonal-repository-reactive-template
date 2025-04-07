@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -49,10 +50,12 @@ public class MovieChangeListener {
                                         return Mono.error(new IllegalStateException("Mongo no es PRIMARY aún"));
                                     }
                                 }))
-                .retryWhen(reactor.util.retry.Retry.backoff(10, Duration.ofSeconds(1)))
-                .doOnError(e -> log.error("❌ No se pudo conectar con Mongo como PRIMARY tras varios intentos {}", e.getMessage()))
+                .retryWhen(Retry.backoff(10, Duration.ofSeconds(1))
+                        .doBeforeRetry(retrySignal -> log.warn("Reintentando conexión a MongoDB...")))
+                .doOnError(e -> log.error("❌ No se pudo conectar con Mongo como PRIMARY tras varios intentos"))
                 .then();
     }
+
 
     private Flux<String> startChangeStream() {
         return mongoTemplate.changeStream("movies", ChangeStreamOptions.empty(), Document.class)
